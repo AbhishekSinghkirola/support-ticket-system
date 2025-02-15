@@ -1,6 +1,3 @@
-<?php
-// $roles = get_roles(true);
-?>
 <!DOCTYPE html>
 
 <html lang="en" class="light-style customizer-hide" dir="ltr" data-theme="theme-default" data-assets-path="assets/" data-template="vertical-menu-template-free">
@@ -102,8 +99,8 @@
                 <label>Select Role</label>
                 <select class="form-control" id="role">
                   <?php if (is_array($roles) && count($roles)) : ?>
-                    <?php foreach ($roles as $role) : ?>
-                      <option value="<?= $role['role_id'] ?>" <?= $role['role_type'] === 'ADMIN' ? 'selected' : '' ?>><?= $role['role_name'] ?></option>
+                    <?php foreach ($roles as $key => $role) : ?>
+                      <option value="<?= $key ?>" <?= $key === 'ADMIN' ? 'selected' : '' ?>><?= $role ?></option>
                     <?php endforeach; ?>
                   <?php endif; ?>
                 </select>
@@ -159,18 +156,20 @@
   <script>
     $(document).ready(function() {
 
+      const roles = <?= json_encode($roles); ?>;
+
       /* ----------------------------- Initiate Login ----------------------------- */
       $('#init_login').click(function(e) {
         e.preventDefault();
 
         const params = {
           valid: true,
-          role_id: $('#role').val(),
+          role: $('#role').val(),
           mobile: $('#mobile').val(),
           password: $('#password').val(),
         }
 
-        if (params.role_id === '') {
+        if (!(params.role in roles)) {
           toastr.error('Please Select Valid Role');
           params.valid = false;
           return false

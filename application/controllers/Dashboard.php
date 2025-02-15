@@ -14,9 +14,10 @@ class Dashboard extends CI_Controller
 		}
 	}
 
+	/* --------------------- Function To Load Dashboard Page -------------------- */
 	public function index()
 	{
-		$this->load->view('template/header');
+		$this->load->view('template/header', ['user' => get_logged_in_user()]);
 		$this->load->view('dashboard');
 		$this->load->view('template/footer');
 	}

@@ -6,7 +6,7 @@ class Auth extends CI_Controller
 	public function __construct()
 	{
 		parent::__construct();
-		// $this->load->model('Auth_model', 'auth_md');
+		$this->load->model('Auth_model', 'auth_md');
 	}
 
 	/* ------------------------ Function To Load Login Page ------------------------ */
@@ -16,7 +16,7 @@ class Auth extends CI_Controller
 		if ($session) {
 			redirect('/');
 		} else {
-			$this->load->view('login');
+			$this->load->view('login', ['roles' => common_status_array('roles')]);
 		}
 	}
 
@@ -30,31 +30,23 @@ class Auth extends CI_Controller
 				$params = $this->input->post();
 				$params['mobile'] = isset($params['mobile']) ? (ctype_digit($params['mobile']) ? trim($params['mobile']) : "") : "";
 				$params['password'] = isset($params['password']) ? (is_string($params['password']) ? trim($params['password']) : "") : "";
-				$params['role_id'] = isset($params['role_id']) ? (is_numeric($params['role_id']) ? trim($params['role_id']) : "") : "";
+				$params['role'] = isset($params['role']) ? (is_numeric($params['role']) ? trim($params['role']) : "") : "";
 
 
 				if (validate_field($params['mobile'], 'mob')) {
 
 					if (validate_field($params['password'], 'strpass')) {
-						$is_valid_user = $this->auth_md->check_valid_user($params['mobile'], md5($params['password']), $params['role_id']);
+						$is_valid_user = $this->auth_md->check_valid_user($params['mobile'], md5($params['password']));
 
-						//dd($is_valid_user);
 						if ($is_valid_user) {
 
-							if ($params['role_id'] == '1') {
-								$user_id = $is_valid_user['user_id'];
-							} else if ($params['role_id'] == '2') {
-								$user_id = $is_valid_user['teacher_id'];
-							} else if ($params['role_id'] == '3') {
-								$user_id = $is_valid_user['student_id'];
-							}
 
 							$session_array = array(
-								"user_id" => $user_id,
-								"role_id" => $is_valid_user['role_id'],
+								"user_id" => $is_valid_user['id'],
+								"role" => $is_valid_user['role'],
 							);
 
-							$this->session->set_userdata("cms_session", $session_array);
+							$this->session->set_userdata("support_session", $session_array);
 
 							$data['Resp_code'] = 'RLD';
 							$data['Resp_desc'] = 'User Logged In Successfully';
@@ -88,7 +80,7 @@ class Auth extends CI_Controller
 	/* ---------------------- Function To Log Out the User ---------------------- */
 	public function logout()
 	{
-		$session = $this->session->has_userdata('cms_session');
+		$session = $this->session->has_userdata('support_session');
 		if ($session) {
 			$this->session->sess_destroy();
 			redirect('login');

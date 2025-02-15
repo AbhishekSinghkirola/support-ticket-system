@@ -1,5 +1,5 @@
 <?php
-$user = get_logged_in_user();
+// $user = get_logged_in_user();
 ?>
 <!DOCTYPE html>
 
@@ -88,161 +88,28 @@ $user = get_logged_in_user();
                         </a>
                     </li>
 
-                    <?php if ($user['role_type'] !== 'USER'): ?>
-                        <!-- Manage Student  -->
-                        <li class="menu-item">
-                            <a href="javascript:void(0);" class="menu-link menu-toggle">
-                                <i class="menu-icon tf-icons bx bxs-user-badge"></i>
-                           
-                                <div data-i18n="Account Settings">Manage Student</div>
-                            </a>
-                            <ul class="menu-sub">
-                                <li class="menu-item">
-                                    <a href="<?= base_url() ?>Student" class="menu-link">
-                                        <div data-i18n="Notifications">Students</div>
-                                    </a>
-                                </li>
-                                <li class="menu-item">
-                                    <a href="<?= base_url() ?>Student/today_attendance" class="menu-link">
-                                        <div data-i18n="Connections">Today Attendance</div>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                    <?php endif; ?>
-
-                    <?php if ($user['role_type'] !== 'USER'): ?>
-                        <!-- Manage Courses -->
-                        <li class="menu-item">
-                            <a href="javascript:void(0);" class="menu-link menu-toggle">
-                                <i class="menu-icon tf-icons bx bx-book-reader"></i>
-                                
-                                <div data-i18n="Account Settings">Manage Courses</div>
-                            </a>
-                            <ul class="menu-sub">
-                                <li class="menu-item">
-                                    <a href="<?= base_url() ?>Courses/category" class="menu-link">
-                                        <div data-i18n="Notifications">Course Category</div>
-                                    </a>
-                                </li>
-                                <li class="menu-item">
-                                    <a href="<?= base_url() ?>Courses" class="menu-link">
-                                        <div data-i18n="Account">Courses</div>
-                                    </a>
-                                </li>
-                                <li class="menu-item">
-                                    <a href="<?= base_url() ?>Courses/content" class="menu-link">
-                                        <div data-i18n="Notifications">Content</div>
-                                    </a>
-                                </li>
-                                <li class="menu-item">
-                                    <a href="<?= base_url() ?>Courses/assign_content" class="menu-link">
-                                        <div data-i18n="Notifications">Assign Content</div>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-
-                    <?php endif; ?>
-                    <?php if($user['role_type'] == 'EMP') : ?>
-
-                                <li class="menu-item">
-                                    <a href="<?= base_url() ?>Teachers/recived_salary" class="menu-link">
-                                         <i class="menu-icon tf-icons bx bx-home-circle"></i>
-                                        <div data-i18n="Notifications">Recived Salary</div>
-                                    </a>
-                                </li>
-                                
-                    <?php endif; ?>
-
-
-                    <?php if ($user['role_type'] === 'USER'): ?>
-                        <!-- Courses  -->
-                        <li class="menu-item">
-                            <a href="<?= base_url() ?>Courses/course_details" class="menu-link">
-                                <i class="menu-icon tf-icons bx bx-home-circle"></i>
-                                <div data-i18n="Analytics">Course Details</div>
-                            </a>
-                        </li>
-
-                        <!-- Manage Attendance -->
-                        <li class="menu-item">
-                            <a href="<?= base_url() ?>Attendance/student_attendance" class="menu-link">
-                                <i class="menu-icon tf-icons bx bx-home-circle"></i>
-                                <div data-i18n="Analytics">Attendance</div>
-                            </a>
-                        </li>
-
-                        <li class="menu-item">
-                            <a href="<?= base_url() ?>Fees/paid_fees" class="menu-link">
-                                    <i class="menu-icon tf-icons bx bx-home-circle"></i>
-                                    <div data-i18n="Notifications">Pending Fees</div>
-                            </a>
-                        </li>
-                    <?php endif; ?>
-
-                    <?php if($user['role_type'] == 'ADMIN'): ?>
-                    <!-- Manage Teachers  -->
                     <li class="menu-item">
                         <a href="javascript:void(0);" class="menu-link menu-toggle">
-                            <i class="menu-icon tf-icons bx bxs-user-voice"></i>
-                            <div data-i18n="Account Settings">Manage Teachers</div>
+                            <i class="menu-icon tf-icons bx bxs-user-badge"></i>
+
+                            <div data-i18n="Account Settings">Manage Student</div>
                         </a>
                         <ul class="menu-sub">
                             <li class="menu-item">
-                                <a href="<?= base_url() ?>Teachers" class="menu-link">
-                                    <div data-i18n="Notifications">Teachers</div>
+                                <a href="<?= base_url() ?>Student" class="menu-link">
+                                    <div data-i18n="Notifications">Students</div>
                                 </a>
                             </li>
-
                             <li class="menu-item">
-                                <a href="<?= base_url() ?>Teachers/pending_salary" class="menu-link">
-                                    <div data-i18n="Notifications">Pending Salary</div>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    <?php endif; ?>
-
-                    <?php if($user['role_type'] == 'ADMIN'): ?>
-
-                    <!-- manage Fees  -->
-                    <li class="menu-item">
-                        <a href="javascript:void(0);" class="menu-link menu-toggle">
-                            <i class="menu-icon tf-icons bx bx-money"></i>
-                            <div data-i18n="Account Settings">Fees Management</div>
-                        </a>
-                        <ul class="menu-sub">
-                            <li class="menu-item">
-                                <a href="<?= base_url() ?>Fees" class="menu-link">
-                                    <div data-i18n="Notifications">Pending Fees</div>
+                                <a href="<?= base_url() ?>Student/today_attendance" class="menu-link">
+                                    <div data-i18n="Connections">Today Attendance</div>
                                 </a>
                             </li>
                         </ul>
                     </li>
 
-                    <li class="menu-item">
-                        <a href="javascript:void(0);" class="menu-link menu-toggle">
-                            <i class="menu-icon tf-icons bx bx-file-find"></i>
-                            <div data-i18n="Account Settings">Reports</div>
-                        </a>
-                        <ul class="menu-sub">
-                            <li class="menu-item">
-                                <a href="<?= base_url() ?>Reports" class="menu-link">
-                                    <div data-i18n="Notifications">Fees Reports</div>
-                                </a>
-                            </li>
-                            <li class="menu-item">
-                                <a href="<?= base_url() ?>Reports/salary" class="menu-link">
-                                    <div data-i18n="Notifications">Salary Reports</div>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    <?php endif; ?>
 
 
-                   
 
                 </ul>
             </aside>

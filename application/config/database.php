@@ -75,12 +75,12 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => 'localhost',
-	'username' => 'root',
-	'password' => '',
-	'database' => 'support-ticket-system',
+	'hostname' => 'sql12.freesqldatabase.com',
+	'username' => 'sql12762590',
+	'password' => 'nVtLtXB5Ft',
+	'database' => 'sql12762590',
 	'dbdriver' => 'mysqli',
-	'dbprefix' => 'cms_',
+	'dbprefix' => '',
 	'pconnect' => FALSE,
 	'db_debug' => (ENVIRONMENT !== 'production'),
 	'cache_on' => FALSE,

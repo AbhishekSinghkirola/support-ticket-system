@@ -6,12 +6,13 @@ class Auth extends CI_Controller
 	public function __construct()
 	{
 		parent::__construct();
-		$this->load->model('Auth_model', 'auth_md');
+		// $this->load->model('Auth_model', 'auth_md');
 	}
 
+	/* ------------------------ Function To Load Login Page ------------------------ */
 	public function login()
 	{
-		$session = $this->session->has_userdata('cms_session');
+		$session = $this->session->has_userdata('support_session');
 		if ($session) {
 			redirect('/');
 		} else {
@@ -31,7 +32,7 @@ class Auth extends CI_Controller
 				$params['password'] = isset($params['password']) ? (is_string($params['password']) ? trim($params['password']) : "") : "";
 				$params['role_id'] = isset($params['role_id']) ? (is_numeric($params['role_id']) ? trim($params['role_id']) : "") : "";
 
-				
+
 				if (validate_field($params['mobile'], 'mob')) {
 
 					if (validate_field($params['password'], 'strpass')) {

@@ -1,5 +1,5 @@
 <?php
-$roles = get_roles(true);
+// $roles = get_roles(true);
 ?>
 <!DOCTYPE html>
 

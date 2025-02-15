@@ -4,14 +4,6 @@ date_default_timezone_set('Asia/Kolkata');
 
 class General_model extends CI_Model
 {
-    public function get_roles($with_admin = true)
-    {
-        if (!$with_admin) {
-            $this->db->where('role_type!=', 'ADMIN');
-        }
-        $res = $this->db->get('role')->result_array();
-        if ($res) return $res;
-    }
 
 
     public function get_user($user_id, $role_id)
@@ -23,7 +15,7 @@ class General_model extends CI_Model
         $this->db->join('role', $table . '.role_id=role.role_id');
         $res = $this->db->get($table)->row_array();
         if ($res) return $res;
-        
+
         // $table = '';
         // if ($role_id == '1') {
         //     $table = 'users';
@@ -44,5 +36,4 @@ class General_model extends CI_Model
         //     return false;
         // }
     }
-  
 }

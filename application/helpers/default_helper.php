@@ -19,32 +19,21 @@ if (!function_exists('dnd')) {
     }
 }
 
-/* ----------------------- Function To Fetch All Roles ---------------------- */
-if (!function_exists('get_roles')) {
-    function get_roles($with_admin)
-    {
-        $CI = &get_instance();
-
-        $roles = $CI->general_md->get_roles($with_admin);
-        return $roles;
-    }
-}
-
 /* ------------------------- Function Holding Regex ------------------------- */
 if (!function_exists('regex_for_validate')) {
     function regex_for_validate($validate_for = null)
     {
         $arr = array();
         $arr = array(
-            "amount" => array("has_regex" => 1, "regex" => "^\s*(?=.*[1-9])\d*(?:\.\d{1,2})?\s*$", "min" => 1, "max" => 20),
             "email" => array('has_regex' => 1, 'min' => 4, 'max' => 100, 'regex' => "^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$"),
-            "mob" => array('has_regex' => 1, 'min' => 10, 'max' => '10', 'regex' => "^[6-9][0-9]{9}$"),
+            "mob" => array('has_regex' => 1, 'min' => 10, 'max' => 10, 'regex' => "^[6-9][0-9]{9}$"),
+            "strpass" => array('has_regex' => 0, 'min' => 6, 'max' => 20, "regex" => ""),
+            "strname" => array('has_regex' => 0, 'min' => 2, 'max' => 100, "regex" => ""),
+            "amount" => array("has_regex" => 1, "regex" => "^\s*(?=.*[1-9])\d*(?:\.\d{1,2})?\s*$", "min" => 1, "max" => 20),
             "straddr" => array('has_regex' => 0, 'min' => 10, 'max' => 200, "regex" => ""),
             "strcity" => array('has_regex' => 0, 'min' => 2, 'max' => 50, "regex" => ""),
             "strstate" => array('has_regex' => 0, 'min' => 2, 'max' => 50, "regex" => ""),
             "strpin" => array('has_regex' => 1, 'min' => 6, 'max' => 6, 'regex' => "^[1-9][0-9]{5}$"),
-            "strpass" => array('has_regex' => 0, 'min' => 6, 'max' => 20, "regex" => ""),
-            "strname" => array('has_regex' => 0, 'min' => 2, 'max' => 100, "regex" => ""),
             "pan" => array('has_regex' => 1, 'min' => 10, 'max' => 10, 'regex' => "^[a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}$"),
             "dob" => array('has_regex' => 1, 'min' => 10, 'max' => 10, 'regex' => "^(0?[1-9]|[12][0-9]|3[01])[\/](0?[1-9]|1[012])[\/]\d{4}$"),
             "name" => array('has_regex' => 0, 'min' => 2, 'max' => 50, "regex" => ""),
@@ -105,7 +94,9 @@ if (!function_exists('common_status_array')) {
     function common_status_array($validate_by = null)
     {
         $array = array(
-            "account_status" => array('ACTIVE' => 'ACTIVE', 'PENDING' => 'PENDING', 'BLOCKED' => 'BLOCKED', 'INACTIVE' => 'INACTIVE'),
+            "roles" => array('ADMIN' => 'Admin', 'SUPPORT' => 'Support Agent', 'USER' => 'User'),
+
+            "account_status" => array('ACTIVE' => 'ACTIVE', 'PENDING' => 'PENDING', 'BLOCKED' => 'BLOCKED'),
 
             "gender" => array('FEMALE' => 'Female', 'MALE' => 'Male', 'OTHERS' => 'Others')
         );
@@ -135,5 +126,4 @@ if (!function_exists(('get_logged_in_user'))) {
 
         return $user;
     }
-    
 }

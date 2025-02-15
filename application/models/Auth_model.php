@@ -5,32 +5,15 @@ date_default_timezone_set('Asia/Kolkata');
 class Auth_model extends CI_Model
 {
     /* ------------------------ Function to validate User ----------------------- */
-    public function check_valid_user($mobile, $password, $role_id)
+    public function check_valid_user($mobile, $password)
     {
-        $table = '';
         $mobile = is_string($mobile) ? trim($mobile) : '';
         $password = is_string($password) ? trim($password) : '';
-        $role_id = is_numeric($role_id) ? trim($role_id) : '';
-
-        if ($mobile && $password && $role_id) {
-            if ($role_id == '1') {
-                $table = 'users';
-            } else if ($role_id == '2') {
-                $table = 'teacher';
-            } else if ($role_id == '3') {
-                $table = 'student';
-            }
-
-            if ($table) {
-                $res = $this->db->get_where($table, ['mobile' => $mobile, 'password' => $password, 'account_status' => 'ACTIVE'])->row_array();
-
-                
-                if ($res) return $res;
-            }
-        }
+        $res = $this->db->get_where('users', ['mobile' => $mobile, 'password' => $password, 'account_status' => 'ACTIVE'])->row_array();
+        if ($res) return $res;
     }
 
-    /* ------------------- Function oCheck User Already Exsist ------------------ */
+    /* ------------------- Function Check User Already Exsist ------------------ */
     public function check_user($email, $mobile)
     {
         if (!empty($email) && !empty($mobile)) {

@@ -121,8 +121,8 @@ if (!function_exists(('get_logged_in_user'))) {
     {
         $CI = &get_instance();
 
-        $session = $CI->session->userdata('cms_session');
-        $user = $CI->general_md->get_user($session['user_id'], $session['role_id']);
+        $session = $CI->session->userdata('support_session');
+        $user = $CI->general_md->get_user($session['user_id']);
 
         return $user;
     }

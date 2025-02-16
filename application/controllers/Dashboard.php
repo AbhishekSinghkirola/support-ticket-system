@@ -7,11 +7,11 @@ class Dashboard extends CI_Controller
 	{
 		parent::__construct();
 
-		$session = $this->session->userdata('support_session');
-		if (!$session) {
-			$this->session->sess_destroy();
-			redirect('login');
-		}
+		// $session = $this->session->userdata('support_session');
+		// if (!$session) {
+		// 	$this->session->sess_destroy();
+		// 	redirect('login');
+		// }
 	}
 
 	/* --------------------- Function To Load Dashboard Page -------------------- */

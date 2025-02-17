@@ -34,7 +34,7 @@ class Tickets extends CI_Controller
         $data = [];
 		$tickets = $this->tickets_md->get_tickets();
 
-		dd($tickets);
+		//dd($tickets);
 		$data['Resp_code'] = 'RCS';
 		$data['Resp_desc'] = 'Tickets Fetched Successfully';
 		$data['data'] = is_array($tickets) ? $tickets : [];

@@ -59,17 +59,17 @@
                 },
                 {
                     title: 'User Email',
-                    data: 'email',
+                    data: 'customer_email',
                     class: 'compact all',
                 },
                 {
                     title: 'Agent Email',
-                    data: 'agent_id',
+                    data: 'agent_email',
                     class: 'compact all',
                 }, 
                 {
                     title: 'Category',
-                    data: 'category_id',
+                    data: 'category_name',
                     class: 'compact all',
                 }, 
                 {

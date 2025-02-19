@@ -21,4 +21,12 @@ class Dashboard extends CI_Controller
 		$this->load->view('dashboard');
 		$this->load->view('template/footer');
 	}
+
+	/* ---------------------- Function To Load Profile Page --------------------- */
+	public function profile()
+	{
+		$this->load->view('template/header');
+		$this->load->view('profile', ['user' => get_logged_in_user()]);
+		$this->load->view('template/footer');
+	}
 }

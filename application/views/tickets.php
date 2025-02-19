@@ -18,7 +18,7 @@
 
 <script>
     $(document).ready(function() {
-       
+
         const tickets_table = $('#tickets_table').DataTable({
             ordering: false,
             processing: true,
@@ -66,12 +66,12 @@
                     title: 'Agent Email',
                     data: 'agent_email',
                     class: 'compact all',
-                }, 
+                },
                 {
                     title: 'Category',
                     data: 'category_name',
                     class: 'compact all',
-                }, 
+                },
                 {
                     title: 'Status',
                     data: 'status',
@@ -274,7 +274,7 @@
         tickets_table.on('click', '.edit_student', function() {
             const row = $(this).closest('tr');
             const showtd = tickets_table.row(row).data();
-           
+
             let html = `
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">Edit Student</h5>
@@ -358,7 +358,7 @@
                     father_name: $('#father_name').val(),
                     mother_name: $('#mother_name').val(),
                     course_id: $('#course_name').val(),
-                    account_status : $('#account_status').val() 
+                    account_status: $('#account_status').val()
                 }
 
                 $.ajax({

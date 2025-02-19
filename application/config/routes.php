@@ -57,3 +57,4 @@ $route['login'] = 'Auth/login';
 $route['logout'] = 'Auth/logout';
 $route['register'] = 'Auth/register';
 $route['profile'] = 'Dashboard/profile';
+$route['users'] = 'User/index';

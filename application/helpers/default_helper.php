@@ -126,4 +126,11 @@ if (!function_exists(('get_logged_in_user'))) {
 
         return $user;
     }
+
+    function unique_user($email, $mobile)
+    {
+        $CI = &get_instance();
+        $user = $CI->general_md->unique_user($email, $mobile);
+        return $user;
+    }
 }

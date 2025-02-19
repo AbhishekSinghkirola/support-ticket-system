@@ -12,4 +12,10 @@ class General_model extends CI_Model
         $res = $this->db->get('users')->row_array();
         if ($res) return $res;
     }
+
+    public function unique_user($email, $mobile)
+    {
+        $res = $this->db->where('email', $email)->or_where('mobile', $mobile)->get('users')->row_array();
+        if ($res) return $res;
+    }
 }

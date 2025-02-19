@@ -1,3 +1,7 @@
+<?php
+$user = get_logged_in_user();
+$url = $this->uri->rsegment(1); // Get the controller name
+?>
 <!DOCTYPE html>
 
 <html lang="en" class="light-style layout-menu-fixed" dir="ltr" data-theme="theme-default" data-assets-path="assets/" data-template="vertical-menu-template-free">
@@ -78,12 +82,21 @@
 
                 <ul class="menu-inner py-1">
                     <!-- Dashboard -->
-                    <li class="menu-item active">
+                    <li class="menu-item <?= ($url === 'Dashboard') ? 'active' : '' ?>">
                         <a href="<?= base_url() ?>" class="menu-link">
                             <i class="menu-icon tf-icons bx bx-home-circle"></i>
                             <div data-i18n="Analytics">Dashboard</div>
                         </a>
                     </li>
+
+                    <?php if ($user['role'] === 'ADMIN'): ?>
+                        <li class="menu-item <?= ($url === 'User') ? 'active' : '' ?>">
+                            <a href="<?= base_url() ?>users" class="menu-link">
+                                <i class="menu-icon tf-icons bx bxs-user-badge"></i>
+                                <div data-i18n="Analytics">User</div>
+                            </a>
+                        </li>
+                    <?php endif; ?>
 
                     <!-- <li class="menu-item">
                         <a href="javascript:void(0);" class="menu-link menu-toggle">
@@ -135,7 +148,7 @@
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end">
                                     <li>
-                                        <a class="dropdown-item" href="#">
+                                        <a class="dropdown-item" href="javascript:void(0);">
                                             <div class="d-flex">
                                                 <div class="flex-shrink-0 me-3">
                                                     <div class="avatar avatar-online">

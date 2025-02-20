@@ -25,18 +25,18 @@ class Auth extends CI_Controller
 	{
 		if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 			$data = [];
-			$session = $this->session->has_userdata('cms_session');
+			$session = $this->session->has_userdata('support_session');
 			if (!$session) {
 				$params = $this->input->post();
 				$params['mobile'] = isset($params['mobile']) ? (ctype_digit($params['mobile']) ? trim($params['mobile']) : "") : "";
 				$params['password'] = isset($params['password']) ? (is_string($params['password']) ? trim($params['password']) : "") : "";
-				$params['role'] = isset($params['role']) ? (is_numeric($params['role']) ? trim($params['role']) : "") : "";
+				$params['role'] = isset($params['role']) ? (is_string($params['role']) ? trim($params['role']) : "") : "";
 
 
 				if (validate_field($params['mobile'], 'mob')) {
 
 					if (validate_field($params['password'], 'strpass')) {
-						$is_valid_user = $this->auth_md->check_valid_user($params['mobile'], md5($params['password']));
+						$is_valid_user = $this->auth_md->check_valid_user($params['mobile'], md5($params['password']), $params['role']);
 
 						if ($is_valid_user) {
 
@@ -45,6 +45,7 @@ class Auth extends CI_Controller
 								"user_id" => $is_valid_user['id'],
 								"role" => $is_valid_user['role'],
 							);
+
 
 							$this->session->set_userdata("support_session", $session_array);
 

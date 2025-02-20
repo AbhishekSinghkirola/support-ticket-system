@@ -1,6 +1,7 @@
 <?php
 $user = get_logged_in_user();
 $url = $this->uri->rsegment(1); // Get the controller name
+
 ?>
 <!DOCTYPE html>
 
@@ -90,10 +91,19 @@ $url = $this->uri->rsegment(1); // Get the controller name
                     </li>
 
                     <?php if ($user['role'] === 'ADMIN'): ?>
+                        <li class="menu-item <?= ($url === 'Agent') ? 'active' : '' ?>">
+                            <a href="<?= base_url() ?>agents" class="menu-link">
+                                <i class="menu-icon tf-icons bx bxs-user-badge"></i>
+                                <div data-i18n="Analytics">Support Agent</div>
+                            </a>
+                        </li>
+                    <?php endif; ?>
+
+                    <?php if (in_array($user['role'], ['ADMIN', 'SUPPORT'])): ?>
                         <li class="menu-item <?= ($url === 'User') ? 'active' : '' ?>">
                             <a href="<?= base_url() ?>users" class="menu-link">
                                 <i class="menu-icon tf-icons bx bxs-user-badge"></i>
-                                <div data-i18n="Analytics">User</div>
+                                <div data-i18n="Analytics">Users</div>
                             </a>
                         </li>
                     <?php endif; ?>

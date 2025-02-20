@@ -126,7 +126,9 @@ if (!function_exists(('get_logged_in_user'))) {
 
         return $user;
     }
+}
 
+if (!function_exists('unique_user')) {
     function unique_user($email, $mobile)
     {
         $CI = &get_instance();

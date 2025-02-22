@@ -1,4 +1,2 @@
 # Support Ticket Management System
 
-## 
-

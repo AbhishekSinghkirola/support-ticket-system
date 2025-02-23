@@ -136,3 +136,11 @@ if (!function_exists('unique_user')) {
         return $user;
     }
 }
+
+if(!function_exists('get_category')){
+    function get_category(){
+        $CI = &get_instance();
+        $category = $CI->general_md->get_category();
+        return $category;
+    }
+}

@@ -18,4 +18,16 @@ class General_model extends CI_Model
         $res = $this->db->where('email', $email)->or_where('mobile', $mobile)->get('users')->row_array();
         if ($res) return $res;
     }
+
+    public function get_category()
+    {
+        $this->db->select('*');
+        $this->db->from('categories');
+        $res = $this->db->get()->result_array();
+        
+        return $res;
+
+
+
+    }
 }

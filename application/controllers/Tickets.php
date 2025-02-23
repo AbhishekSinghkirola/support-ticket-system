@@ -7,11 +7,11 @@ class Tickets extends CI_Controller
 	{
 		parent::__construct();
 
-		// $session = $this->session->userdata('support_session');
-		// if (!$session) {
-		// 	$this->session->sess_destroy();
-		// 	redirect('login');
-		// }
+		$session = $this->session->userdata('support_session');
+		if (!$session) {
+			$this->session->sess_destroy();
+			redirect('login');
+		}
 
 		$this->load->model('Tickets_model', 'tickets_md');
 	}
@@ -25,12 +25,6 @@ class Tickets extends CI_Controller
 
     public function get_tickets(){
 
-        // $session = $this->session->userdata('cms_session');
-		// if (!$session) {
-		// 	$this->session->sess_destroy();
-		// 	exit(json_encode(['Resp_code' => 'RLD', 'Resp_desc' => 'Session Destroyed']));
-		// }
-
         $data = [];
 		$tickets = $this->tickets_md->get_tickets();
 
@@ -42,4 +36,35 @@ class Tickets extends CI_Controller
 		exit(json_encode($data));
 
     }
+
+	public function add_tickets(){
+
+		$data = [];
+		$params = $this->input->post();
+// dd($params);
+		$user = get_logged_in_user();
+		$user_id = $user['id'];
+
+				$insert_data = [
+					'title' => $params['ticket_title'],
+					'description' => $params['ticket_desc'],
+					'status' => $params['status'],
+					'priority' => $params['priority'],
+					'category_id' => $params['category_id'],
+					'user_id' => $user_id,
+					'agent_id' => NULL,
+				];
+
+				if ($this->tickets_md->add_tickets($insert_data)) {
+					$data['Resp_code'] = 'RCS';
+					$data['Resp_desc'] = 'Ticket Added successfully';
+					$data['data'] = [];
+				} else {
+					$data['Resp_code'] = 'ERR';
+					$data['Resp_desc'] = 'Internal Processing Error';
+					$data['data'] = [];
+				}
+		
+		exit(json_encode($data));
+	}
 }

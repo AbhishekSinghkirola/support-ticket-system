@@ -18,7 +18,7 @@ class User extends CI_Controller
             redirect('dashboard');
         }
 
-        $this->load->model('Agent_model', 'agent_md');
+        $this->load->model('User_model', 'user_md');
     }
 
     /* ------------------------ Function To Load Users Page ------------------------ */
@@ -29,82 +29,23 @@ class User extends CI_Controller
         $this->load->view('template/footer');
     }
 
-    /* ------------------------ Function to get all agents ----------------------- */
-    public function get_agents()
+    /* ------------------------ Function to get all users ----------------------- */
+    public function get_users()
     {
-        $users = $this->agent_md->get_agents();
+        $users = $this->user_md->get_users();
 
         $data = [];
 
         $data['Resp_code'] = 'RCS';
-        $data['Resp_desc'] = 'Tickets Fetched Successfully';
+        $data['Resp_desc'] = 'Users Fetched Successfully';
         $data['data'] = is_array($users) ? $users : [];
         echo json_encode($data);
     }
 
-    /* ------------------------ Function to add new agent ------------------------ */
-    public function add_agent()
+    /* -------------------------- Function to edit user ------------------------- */
+    public function edit_user()
     {
-        $params = $this->input->post();
-
-        $user_name = isset($params['user_name']) ? $params['user_name'] : '';
-        $email = isset($params['email']) ? $params['email'] : '';
-        $mobile = isset($params['mobile']) ? $params['mobile'] : '';
-
-        if (validate_field($user_name, 'strname')) {
-
-            if (validate_field($email, 'email')) {
-
-                if (validate_field($mobile, 'mob')) {
-
-                    $unique_user = unique_user($email, $mobile);
-
-                    if (!$unique_user) {
-
-                        $insert_data = [
-                            'name' => $user_name,
-                            'email' => $email,
-                            'mobile' => $mobile,
-                            'account_status' => 'ACTIVE',
-                            'role' => 'SUPPORT',
-                            'created_at' => date('Y-m-d H:i:s'),
-                        ];
-
-                        $inserted = $this->agent_md->add_agent($insert_data);
-
-                        if ($inserted) {
-                            $data['Resp_code'] = 'RCS';
-                            $data['Resp_desc'] = 'Agent Added Successfully';
-                        } else {
-                            $data['Resp_code'] = 'ERR';
-                            $data['Resp_desc'] = 'Failed to Add User';
-                        }
-                    } else {
-                        $data['Resp_code'] = 'ERR';
-                        $data['Resp_desc'] = 'Agent Already Exists';
-                    }
-                } else {
-                    $data['Resp_code'] = 'ERR';
-                    $data['Resp_desc'] = 'Invalid Email Address';
-                }
-            } else {
-                $data['Resp_code'] = 'ERR';
-                $data['Resp_desc'] = 'Invalid Email Address';
-            }
-        } else {
-            $data['Resp_code'] = 'ERR';
-            $data['Resp_desc'] = 'Invalid User Name';
-        }
-
-
-
-        echo json_encode($data);
-        exit;
-    }
-
-    /* -------------------------- Function to edit agent ------------------------- */
-    public function edit_agent()
-    {
+        $session = $this->session->userdata('support_session');
         $params = $this->input->post();
 
         $user_id = isset($params['user_id']) ? $params['user_id'] : '';
@@ -114,7 +55,7 @@ class User extends CI_Controller
         $account_status = isset($params['account_status']) ? $params['account_status'] : '';
         if ($user_id) {
 
-            $user_details = $this->agent_md->get_agent($user_id);
+            $user_details = $this->user_md->get_user($user_id);
 
             if ($user_details) {
 
@@ -138,13 +79,14 @@ class User extends CI_Controller
                                         'mobile' => $mobile,
                                         'account_status' => $account_status,
                                         'updated_at' => date('Y-m-d H:i:s'),
+                                        'updated_by' => $session['user_id']
                                     ];
 
-                                    $updated = $this->agent_md->update_agent($params['user_id'], $update_data);
+                                    $updated = $this->user_md->update_user($params['user_id'], $update_data);
 
                                     if ($updated) {
                                         $data['Resp_code'] = 'RCS';
-                                        $data['Resp_desc'] = 'Agent Updated Successfully';
+                                        $data['Resp_desc'] = 'User Updated Successfully';
                                     } else {
                                         $data['Resp_code'] = 'ERR';
                                         $data['Resp_desc'] = 'Failed to Update User';
@@ -179,8 +121,8 @@ class User extends CI_Controller
         exit;
     }
 
-    /* ------------------------- Function to delete agent ------------------------ */
-    public function delete_agent()
+    /* ------------------------- Function to delete user ------------------------ */
+    public function delete_user()
     {
         $params = $this->input->post();
 
@@ -188,15 +130,15 @@ class User extends CI_Controller
 
         if ($user_id) {
 
-            $user_details = $this->agent_md->get_agent($user_id);
+            $user_details = $this->user_md->get_user($user_id);
 
             if ($user_details) {
 
-                $deleted = $this->agent_md->delete_agent($user_id);
+                $deleted = $this->user_md->delete_user($user_id);
 
                 if ($deleted) {
                     $data['Resp_code'] = 'RCS';
-                    $data['Resp_desc'] = 'Agent Deleted Successfully';
+                    $data['Resp_desc'] = 'User Deleted Successfully';
                 } else {
                     $data['Resp_code'] = 'ERR';
                     $data['Resp_desc'] = 'Failed to Delete User';

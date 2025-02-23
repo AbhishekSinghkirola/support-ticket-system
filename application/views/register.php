@@ -1,6 +1,3 @@
-<?php
-$roles = get_roles(false);
-?>
 <!DOCTYPE html>
 
 <html lang="en" class="light-style customizer-hide" dir="ltr" data-theme="theme-default" data-assets-path="assets/" data-template="vertical-menu-template-free">
@@ -9,7 +6,7 @@ $roles = get_roles(false);
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-    <title>Register Basic - Pages | Sneat - Bootstrap 5 HTML Admin Template - Pro</title>
+    <title>Register | Support ticket Management System</title>
 
     <meta name="description" content="" />
 
@@ -91,31 +88,17 @@ $roles = get_roles(false);
                                         </g>
                                     </svg>
                                 </span>
-                                <span class="app-brand-text demo text-body fw-bolder text-uppercase">CMS</span>
+                                <span class="app-brand-text demo text-body fw-bolder text-uppercase">STMS</span>
                             </a>
                         </div>
                         <!-- /Logo -->
                         <h4 class="mb-2">Adventure starts here 🚀</h4>
                         <p class="mb-4">Make your app management easy and fun!</p>
 
-                        <form class="mb-3" action="#">
+                        <form id="register-form" class="mb-3" action="#">
                             <div class="mb-3">
-                                <label>Select Role</label>
-                                <select class="form-control" id="role">
-                                    <?php if (is_array($roles) && count($roles)) : ?>
-                                        <?php foreach ($roles as $role) : ?>
-                                            <option value="<?= $role['role_id'] ?>" <?= $role['role_type'] === 'ADMIN' ? 'selected' : '' ?>><?= $role['role_name'] ?></option>
-                                        <?php endforeach; ?>
-                                    <?php endif; ?>
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label for="username" class="form-label">First Name</label>
-                                <input type="text" class="form-control" id="fname" name="username" placeholder="Enter your first name" autofocus />
-                            </div>
-                            <div class="mb-3">
-                                <label for="username" class="form-label">Last Name</label>
-                                <input type="text" class="form-control" id="lname" name="username" placeholder="Enter your last name" autofocus />
+                                <label for="username" class="form-label">User Name</label>
+                                <input type="text" class="form-control" id="fname" name="username" placeholder="Enter your name" autofocus />
                             </div>
                             <div class="mb-3">
                                 <label for="email" class="form-label">Email</label>
@@ -172,7 +155,6 @@ $roles = get_roles(false);
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
     <script>
-        
         $(document).ready(function() {
 
             /* ---------------------------- Register Process ---------------------------- */
@@ -181,22 +163,14 @@ $roles = get_roles(false);
 
                 const params = {
                     valid: true,
-                    fname: $('#fname').val(),
-                    lname: $('#lname').val(),
+                    user_name: $('#fname').val(),
                     email: $('#email').val(),
                     mobile: $('#mobile').val(),
                     password: $('#password').val(),
-                    role_id: $('#role').val(),
                 }
 
-                if (params.fname === '') {
-                    toastr.error('Invalid First Name')
-                    params.valid = false;
-                    return false;
-                }
-
-                if (params.lname === '') {
-                    toastr.error('Invalid Last Name')
+                if (params.user_name === '') {
+                    toastr.error('Invalid User Name')
                     params.valid = false;
                     return false;
                 }
@@ -213,18 +187,6 @@ $roles = get_roles(false);
                     return false;
                 }
 
-                if (params.role_id === '') {
-                    toastr.error('Invalid Role')
-                    params.valid = false;
-                    return false;
-                }
-
-                if (params.email === '') {
-                    toastr.error('Invalid Email')
-                    params.valid = false;
-                    return false;
-                }
-
                 if (params.valid) {
                     $.ajax({
                         url: '<?= base_url() ?>Auth/registration',
@@ -235,6 +197,7 @@ $roles = get_roles(false);
                             if (res) {
                                 if (res.Resp_code === 'RCS') {
                                     toastr.info(res.Resp_desc);
+                                    $('#register-form')[0].reset();
                                 } else if (res.Resp_code === 'RLD') {
                                     window.location.reload();
                                 } else {

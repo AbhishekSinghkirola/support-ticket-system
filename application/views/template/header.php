@@ -108,6 +108,12 @@ $url = $this->uri->rsegment(1); // Get the controller name
                         </li>
                     <?php endif; ?>
 
+                    <li class="menu-item <?= ($url === 'Tickets') ? 'active' : '' ?>">
+                            <a href="<?= base_url() ?>Tickets" class="menu-link">
+                                <i class="menu-icon tf-icons bx bxs-user-badge"></i>
+                                <div data-i18n="Analytics">Tickets</div>
+                            </a>
+                    </li>
                     <!-- <li class="menu-item">
                         <a href="javascript:void(0);" class="menu-link menu-toggle">
                             <i class="menu-icon tf-icons bx bxs-user-badge"></i>

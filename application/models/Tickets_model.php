@@ -47,6 +47,11 @@ class Tickets_model extends CI_Model
 
     }
 
+    public function add_tickets($insert_data)
+    {
+        return $this->db->insert('tickets', $insert_data);
+    }
+
 }
 
 ?>

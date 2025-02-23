@@ -18,7 +18,7 @@ class Auth_model extends CI_Model
     public function check_user($email, $mobile)
     {
         if (!empty($email) && !empty($mobile)) {
-            $res = $this->db->get_where('users', ['email' => $email, 'mobile' => $mobile])->row_array();
+            $res = $this->db->where(['email', $email])->or_where('mobile', $mobile)->get('users')->row_array();
             if ($res) return $res;
         }
     }

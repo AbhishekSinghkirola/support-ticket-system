@@ -37,7 +37,7 @@ class Agent extends CI_Controller
         $data = [];
 
         $data['Resp_code'] = 'RCS';
-        $data['Resp_desc'] = 'Tickets Fetched Successfully';
+        $data['Resp_desc'] = 'Agents Fetched Successfully';
         $data['data'] = is_array($users) ? $users : [];
         echo json_encode($data);
     }
@@ -106,6 +106,7 @@ class Agent extends CI_Controller
     /* -------------------------- Function to edit agent ------------------------- */
     public function edit_agent()
     {
+        $session = $this->session->userdata('support_session');
         $params = $this->input->post();
 
         $user_id = isset($params['user_id']) ? $params['user_id'] : '';
@@ -139,6 +140,7 @@ class Agent extends CI_Controller
                                         'mobile' => $mobile,
                                         'account_status' => $account_status,
                                         'updated_at' => date('Y-m-d H:i:s'),
+                                        'updaetd_by' => $session['user_id']
                                     ];
 
                                     $updated = $this->agent_md->update_agent($params['user_id'], $update_data);

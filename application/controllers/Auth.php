@@ -90,85 +90,87 @@ class Auth extends CI_Controller
 		}
 	}
 
+	/* ------------------------ Function To Register User ----------------------- */
 	public function register()
 	{
-		$this->load->view('register');
+		$session = $this->session->has_userdata('support_session');
+		if ($session) {
+			redirect('/');
+		} else {
+			$this->load->view('register');
+		}
 	}
 
 	/* --------------------- Function For User Registration --------------------- */
 	public function registration()
 	{
+		$session = $this->session->has_userdata('support_session');
+
+		if ($session) {
+			redirect('/');
+		}
+
 		if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 			$data = [];
 
 			$params = $this->input->post();
-			$params['fname'] = isset($params['fname']) ? (is_string($params['fname']) ? trim($params['fname']) : "") : "";
-			$params['lname'] = isset($params['lname']) ? (is_string($params['lname']) ? trim($params['lname']) : "") : "";
+			$params['user_name'] = isset($params['user_name']) ? (is_string($params['user_name']) ? trim($params['user_name']) : "") : "";
 			$params['email'] = isset($params['email']) ? (is_string($params['email']) ? trim($params['email']) : "") : "";
-			$params['mobile'] = isset($params['mobile']) ? (ctype_digit($params['mobile']) ? trim($params['mobile']) : "") : "";
+			$params['mobile'] = isset($params['mobile']) ? (is_string($params['mobile']) ? trim($params['mobile']) : "") : "";
 			$params['password'] = isset($params['password']) ? (is_string($params['password']) ? trim($params['password']) : "") : "";
-			$params['role_id'] = isset($params['role_id']) ? (is_numeric($params['role_id']) ? trim($params['role_id']) : "") : "";
 
-			if (validate_field($params['fname'], 'strname')) {
+			if (validate_field($params['user_name'], 'strname')) {
 
-				if (validate_field($params['lname'], 'strname')) {
+				if (validate_field($params['email'], 'email')) {
 
-					if (validate_field($params['email'], 'email')) {
+					if (validate_field($params['mobile'], 'mob')) {
 
-						if (validate_field($params['mobile'], 'mob')) {
+						if (validate_field($params['password'], 'strpass')) {
 
-							if (validate_field($params['password'], 'strpass')) {
-
-								$check_user = $this->auth_md->check_user($params['email'], $params['mobile']);
-								if ($check_user) {
-									$data['Resp_code'] = 'ERR';
-									$data['Resp_desc'] = 'User Already Exsist';
+							$check_user = $this->auth_md->check_user($params['email'], $params['mobile']);
+							if ($check_user) {
+								$data['Resp_code'] = 'ERR';
+								$data['Resp_desc'] = 'User Already Exsist';
+								$data['data'] = [];
+							} else {
+								$insert_array = [
+									'name' => $params['user_name'],
+									'email' => $params['email'],
+									'mobile' => $params['mobile'],
+									'password' => md5($params['password']),
+									'role' => 'USER',
+									'created_at' => date('Y-m-d H:i:s'),
+									'account_status' => 'ACTIVE',
+								];
+								$insert_user = $this->auth_md->insert_user($insert_array);
+								if ($insert_user) {
+									$data['Resp_code'] = 'RCS';
+									$data['Resp_desc'] = 'Registered Successfully';
 									$data['data'] = [];
 								} else {
-									$insert_array = [
-										'first_name' => $params['fname'],
-										'last_name' => $params['lname'],
-										'email' => $params['email'],
-										'mobile' => $params['mobile'],
-										'password' => md5($params['password']),
-										'role_id' => $params['role_id'],
-										'created_on' => date('Y-m-d H:i:s'),
-										'account_status' => 'PENDING',
-									];
-									$insert_user = $this->auth_md->insert_user($insert_array);
-									if ($insert_user) {
-										$data['Resp_code'] = 'RCS';
-										$data['Resp_desc'] = 'Registered Successfully';
-										$data['data'] = [];
-									} else {
-										$data['Resp_code'] = 'ERR';
-										$data['Resp_desc'] = 'Something Went Wrong';
-										$data['data'] = [];
-									}
+									$data['Resp_code'] = 'ERR';
+									$data['Resp_desc'] = 'Something Went Wrong';
+									$data['data'] = [];
 								}
-							} else {
-								$data['Resp_code'] = 'ERR';
-								$data['Resp_desc'] = 'Invalid Password';
-								$data['data'] = [];
 							}
 						} else {
 							$data['Resp_code'] = 'ERR';
-							$data['Resp_desc'] = 'Invalid Mobile Number';
+							$data['Resp_desc'] = 'Invalid Password';
 							$data['data'] = [];
 						}
 					} else {
 						$data['Resp_code'] = 'ERR';
-						$data['Resp_desc'] = 'Invalid Email';
+						$data['Resp_desc'] = 'Invalid Mobile Number';
 						$data['data'] = [];
 					}
 				} else {
 					$data['Resp_code'] = 'ERR';
-					$data['Resp_desc'] = 'Invalid Last Name';
+					$data['Resp_desc'] = 'Invalid Email';
 					$data['data'] = [];
 				}
 			} else {
 				$data['Resp_code'] = 'ERR';
-				$data['Resp_desc'] = 'Invalid First Name';
+				$data['Resp_desc'] = 'Invalid User Name';
 				$data['data'] = [];
 			}
 			echo json_encode($data);

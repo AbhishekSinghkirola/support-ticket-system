@@ -60,3 +60,4 @@ $route['dashboard'] = 'Dashboard/index';
 $route['profile'] = 'Dashboard/profile';
 $route['agents'] = 'Agent/index';
 $route['users'] = 'User/index';
+$route['categories'] = 'Category/index';

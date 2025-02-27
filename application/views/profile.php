@@ -4,10 +4,10 @@
        <div class="col-xl">
            <div class="card mb-4">
                <div class="card-body">
-                   <form>
+                   <form id="profile_form">
                        <div class="mb-3">
-                           <label class="form-label" for="basic-default-fullname">Name</label>
-                           <input type="text" class="form-control" id="basic-default-fullname" placeholder="Name" value="<?= $user['name'] ?>" />
+                           <label class="form-label" for="user_name">Name</label>
+                           <input type="text" class="form-control" id="user_name" placeholder="Name" value="<?= $user['name'] ?>" />
                        </div>
                        <div class="mb-3">
                            <label class="form-label" for="basic-default-email">Email</label>
@@ -29,10 +29,51 @@
                                class="form-control phone-mask"
                                placeholder="Enter Mobile" value="<?= $user['mobile'] ?>" disabled />
                        </div>
-                       <button type="submit" class="btn btn-primary">Update</button>
+                       <button type="button" id="update_profile" class="btn btn-primary">Update</button>
                    </form>
                </div>
            </div>
        </div>
 
    </div>
+
+   <script>
+       $(document).ready(function() {
+           /* ----------------------------- Update Profile ---------------------------- */
+           $('#update_profile').click(function() {
+               const params = {
+                   valid: true,
+                   user_name: $('#user_name').val(),
+               }
+
+               if (params.user_name === '') {
+                   toastr.error('Enter User Name');
+                   params.valid = false;
+                   return false;
+               }
+
+
+               if (params.valid) {
+                   $.ajax({
+                       url: '<?= base_url() ?>Dashboard/update_profile',
+                       method: 'POST',
+                       dataType: 'JSON',
+                       data: params,
+                       success: function(res) {
+                           if (res.Resp_code === 'RCS') {
+                               toastr.info(res.Resp_desc)
+                               $('#user_name').val(params.user_name);
+
+                           } else if (res.Resp_code === 'RLD') {
+                               window.location.reload();
+                           } else {
+                               toastr.error(res.Resp_desc)
+                           }
+                       }
+                   })
+               }
+
+
+           })
+       });
+   </script>

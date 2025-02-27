@@ -61,4 +61,4 @@ $route['profile'] = 'Dashboard/profile';
 $route['agents'] = 'Agent/index';
 $route['users'] = 'User/index';
 $route['categories'] = 'Category/index';
-$route['change-password'] = 'User/change_password';
+$route['change-password'] = 'Auth/change_password';

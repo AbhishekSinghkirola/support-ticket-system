@@ -63,7 +63,7 @@
 
                if (params.valid) {
                    $.ajax({
-                       url: '<?= base_url() ?>User/update_password',
+                       url: '<?= base_url() ?>Auth/update_password',
                        method: 'POST',
                        dataType: 'JSON',
                        data: params,

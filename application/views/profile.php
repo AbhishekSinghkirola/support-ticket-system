@@ -62,7 +62,7 @@
                        success: function(res) {
                            if (res.Resp_code === 'RCS') {
                                toastr.info(res.Resp_desc)
-                               $('#user_name').val(params.user_name);
+                               window.location.reload();
 
                            } else if (res.Resp_code === 'RLD') {
                                window.location.reload();

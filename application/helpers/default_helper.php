@@ -28,7 +28,8 @@ if (!function_exists('regex_for_validate')) {
             "email" => array('has_regex' => 1, 'min' => 4, 'max' => 100, 'regex' => "^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$"),
             "mob" => array('has_regex' => 1, 'min' => 10, 'max' => 10, 'regex' => "^[6-9][0-9]{9}$"),
             "strpass" => array('has_regex' => 0, 'min' => 6, 'max' => 20, "regex" => ""),
-            "strname" => array('has_regex' => 0, 'min' => 2, 'max' => 100, "regex" => ""),
+            "strname" => array('has_regex' => 0, 'min' => 2, 'max' => 5000, "regex" => ""),
+            "description" => array('has_regex' => 0, 'min' => 10, 'max' => 100, "regex" => ""),
             "amount" => array("has_regex" => 1, "regex" => "^\s*(?=.*[1-9])\d*(?:\.\d{1,2})?\s*$", "min" => 1, "max" => 20),
             "straddr" => array('has_regex' => 0, 'min' => 10, 'max' => 200, "regex" => ""),
             "strcity" => array('has_regex' => 0, 'min' => 2, 'max' => 50, "regex" => ""),
@@ -137,8 +138,9 @@ if (!function_exists('unique_user')) {
     }
 }
 
-if(!function_exists('get_category')){
-    function get_category(){
+if (!function_exists('get_category')) {
+    function get_category()
+    {
         $CI = &get_instance();
         $category = $CI->general_md->get_category();
         return $category;

@@ -178,4 +178,84 @@ class Auth extends CI_Controller
 			redirect('login');
 		}
 	}
+
+	/* ------------------ Function To Show change password page ----------------- */
+	public function change_password()
+	{
+		$this->load->view('template/header');
+		$this->load->view('change-password');
+		$this->load->view('template/footer');
+	}
+
+	/* -------------------- Function to update user password -------------------- */
+	public function update_password()
+	{
+		$this->load->model('User_model', 'user_md');
+
+		$params = $this->input->post();
+		$data = [];
+
+		$old_password = isset($params['old_password']) ? $params['old_password'] : '';
+		$new_password = isset($params['new_password']) ? $params['new_password'] : '';
+		$confirm_password = isset($params['confirm_password']) ? $params['confirm_password'] : '';
+
+		if (validate_field($old_password, 'strpass')) {
+
+			if (validate_field($new_password, 'strpass')) {
+
+				if (validate_field($confirm_password, 'strpass')) {
+
+					if ($new_password === $confirm_password) {
+
+						$session = $this->session->userdata('support_session');
+						$user_id = $session['user_id'];
+
+						$user_details = $this->user_md->get_user($user_id);
+
+						if ($user_details) {
+
+							if (md5($old_password) === $user_details['password']) {
+
+								$update_data = [
+									'password' => md5($new_password),
+									'updated_at' => date('Y-m-d H:i:s'),
+									'updated_by' => $user_id
+								];
+
+								$updated = $this->user_md->update_user($user_id, $update_data);
+
+								if ($updated) {
+									$data['Resp_code'] = 'RCS';
+									$data['Resp_desc'] = 'Password Updated Successfully';
+								} else {
+									$data['Resp_code'] = 'ERR';
+									$data['Resp_desc'] = 'Failed to Update Password';
+								}
+							} else {
+								$data['Resp_code'] = 'ERR';
+								$data['Resp_desc'] = 'Invalid Old Password';
+							}
+						} else {
+							$data['Resp_code'] = 'ERR';
+							$data['Resp_desc'] = 'User does not exist';
+						}
+					} else {
+						$data['Resp_code'] = 'ERR';
+						$data['Resp_desc'] = 'New Password and Confirm New Password does not match';
+					}
+				} else {
+					$data['Resp_code'] = 'ERR';
+					$data['Resp_desc'] = 'Confirm New Password is required';
+				}
+			} else {
+				$data['Resp_code'] = 'ERR';
+				$data['Resp_desc'] = 'New Password is required';
+			}
+		} else {
+			$data['Resp_code'] = 'ERR';
+			$data['Resp_desc'] = 'Old Password is required';
+		}
+
+		echo json_encode($data);
+	}
 }

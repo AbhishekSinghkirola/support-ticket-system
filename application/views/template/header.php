@@ -197,6 +197,12 @@ $url = $this->uri->rsegment(1); // Get the controller name
                                         </a>
                                     </li>
                                     <li>
+                                        <a class="dropdown-item" href="<?= base_url() ?>change-password">
+                                            <i class="bx bx-user me-2"></i>
+                                            <span class="align-middle">Change Password</span>
+                                        </a>
+                                    </li>
+                                    <li>
                                         <div class="dropdown-divider"></div>
                                     </li>
                                     <li>

@@ -31,4 +31,29 @@ class Auth_model extends CI_Model
             return true;
         }
     }
+
+    /* ------------------- Function to check user email exist ------------------- */
+    public function check_user_email_exist($email)
+    {
+        if (!empty($email)) {
+            $res = $this->db->where('email', $email)->get('users')->row_array();
+            if ($res) return $res;
+        }
+    }
+
+    /* ------------------- public function to update user data ------------------ */
+    public function update_user($user_id, $update_data)
+    {
+        $res = $this->db->where('id', $user_id)->update('users', $update_data);
+        if ($res) return $res;
+    }
+
+    /* ------------------- Function to get user data by reset token ---------------------- */
+    public function check_user_reset_token($reset_token)
+    {
+        if (!empty($reset_token)) {
+            $res = $this->db->where('reset_token', $reset_token)->get('users')->row_array();
+            if ($res) return $res;
+        }
+    }
 }

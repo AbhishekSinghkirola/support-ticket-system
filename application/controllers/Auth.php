@@ -258,4 +258,172 @@ class Auth extends CI_Controller
 
 		echo json_encode($data);
 	}
+
+	/* ------------------ Function To Show Forgot Password Page ----------------- */
+	public function forgot_password()
+	{
+
+		$session = $this->session->has_userdata('support_session');
+		if ($session) {
+			redirect('/');
+		} else {
+			$this->load->view('forgot-password');
+		}
+	}
+
+	/* ------------------ Function to send reset password link ------------------ */
+	public function send_reset_password_link()
+	{
+		if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+			$data = [];
+			$session = $this->session->has_userdata('support_session');
+			if (!$session) {
+				$params = $this->input->post();
+				$params['email'] = isset($params['email']) ? (is_string($params['email']) ? trim($params['email']) : "") : "";
+
+				if (validate_field($params['email'], 'email')) {
+
+					$is_valid_user = $this->auth_md->check_user_email_exist($params['email']);
+
+					if ($is_valid_user) {
+
+						$this->load->library('email');
+
+						$resetToken = md5($is_valid_user['email'] . time());
+						$reset_link = base_url('reset-password/' . $resetToken);
+
+						$this->auth_md->update_user($is_valid_user['id'], ['reset_token' => $resetToken]);
+
+						$this->email->from(USER_EMAIL, USER_NAME);
+						$this->email->to($params['email']);
+						$this->email->subject('Reset Password Process');
+						$this->email->message('<h1>Hello!</h1><p>Please click on this link <a href="' . $reset_link . '">' . $reset_link . '</a></p>');
+
+						if ($this->email->send()) {
+							$data['Resp_code'] = 'ERR';
+							$data['Resp_desc'] = 'Email Sent Successfully';
+							$data['data'] = [];
+						} else {
+							$data['Resp_code'] = 'ERR';
+							$data['Resp_desc'] = 'User email does not exist';
+							$data['data'] = [];
+						}
+					} else {
+						$data['Resp_code'] = 'ERR';
+						$data['Resp_desc'] = 'User email does not exist';
+						$data['data'] = [];
+					}
+				} else {
+					$data['Resp_code'] = 'ERR';
+					$data['Resp_desc'] = 'Invalid Email Address';
+					$data['data'] = [];
+				}
+			} else {
+				$data['Resp_code'] = 'RLD';
+				$data['Resp_desc'] = 'Session already exist';
+				$data['data'] = [];
+			}
+
+			$this->session->set_flashdata('data', $data);
+			redirect($_SERVER['HTTP_REFERER']);
+		} else {
+			redirect('login');
+		}
+	}
+
+	/* ----------------------- Function To Show Reset Password Page ----------------------- */
+	public function reset_password_view($resetToken = null)
+	{
+		if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+			$data = [];
+			$session = $this->session->has_userdata('support_session');
+			if (!$session) {
+				$user = $this->auth_md->check_user_reset_token($resetToken);
+
+				if ($user) {
+					$this->load->view('reset-password', ['resetToken' => $resetToken]);
+				} else {
+					redirect('login');
+				}
+			} else {
+				$data['Resp_code'] = 'RLD';
+				$data['Resp_desc'] = 'Session already exist';
+				$data['data'] = [];
+				$this->session->set_flashdata('data', $data);
+				redirect($_SERVER['HTTP_REFERER']);
+			}
+		} else {
+			redirect('login');
+		}
+	}
+
+	/* ------------------------ Function to reset password ----------------------- */
+	public function reset_password()
+	{
+		if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+			$data = [];
+			$session = $this->session->has_userdata('support_session');
+			if (!$session) {
+				$params = $this->input->post();
+				$params['reset_token'] = isset($params['reset_token']) ? (is_string($params['reset_token']) ? trim($params['reset_token']) : "") : "";
+				$params['new_password'] = isset($params['new_password']) ? (is_string($params['new_password']) ? trim($params['new_password']) : "") : "";
+				$params['confirm_password'] = isset($params['confirm_password']) ? (is_string($params['confirm_password']) ? trim($params['confirm_password']) : "") : "";
+				$user = $this->auth_md->check_user_reset_token($params['reset_token']);
+				if ($user) {
+
+					if (validate_field($params['new_password'], 'strpass')) {
+
+						if (validate_field($params['confirm_password'], 'strpass')) {
+
+							if ($params['new_password'] === $params['confirm_password']) {
+
+								$update_data = [
+									'password' => md5($params['new_password']),
+									'updated_at' => date('Y-m-d H:i:s'),
+									'updated_by' => $user['id'],
+									'reset_token' => null
+								];
+
+								$updated = $this->auth_md->update_user($user['id'], $update_data);
+
+								if ($updated) {
+									$data['Resp_code'] = 'RCS';
+									$data['Resp_desc'] = 'Password Updated Successfully';
+									$data['data'] = [];
+								} else {
+									$data['Resp_code'] = 'ERR';
+									$data['Resp_desc'] = 'Failed to Update Password';
+									$data['data'] = [];
+								}
+							} else {
+								$data['Resp_code'] = 'ERR';
+								$data['Resp_desc'] = 'New Password and Confirm Password does not match';
+								$data['data'] = [];
+							}
+						} else {
+							$data['Resp_code'] = 'ERR';
+							$data['Resp_desc'] = 'Confirm Password is required';
+							$data['data'] = [];
+						}
+					} else {
+						$data['Resp_code'] = 'ERR';
+						$data['Resp_desc'] = 'Invalid Password';
+						$data['data'] = [];
+					}
+				} else {
+					$data['Resp_code'] = 'ERR';
+					$data['Resp_desc'] = 'Invalid Token';
+					$data['data'] = [];
+				}
+			} else {
+				$data['Resp_code'] = 'RLD';
+				$data['Resp_desc'] = 'Session already exist';
+				$data['data'] = [];
+			}
+			$this->session->set_flashdata('data', $data);
+			redirect($_SERVER['HTTP_REFERER']);
+		} else {
+			redirect('login');
+		}
+	}
 }

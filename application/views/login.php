@@ -6,7 +6,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-  <title>Login Basic - Pages | Sneat - Bootstrap 5 HTML Admin Template - Pro</title>
+  <title>Login </title>
 
   <meta name="description" content="" />
   <base href="<?= base_url(); ?>cms-assets/">
@@ -112,7 +112,7 @@
               <div class="mb-3 form-password-toggle">
                 <div class="d-flex justify-content-between">
                   <label class="form-label" for="password">Password</label>
-                  <a href="auth-forgot-password-basic.html">
+                  <a href="<?= base_url() ?>forgot-password">
                     <small>Forgot Password?</small>
                   </a>
                 </div>

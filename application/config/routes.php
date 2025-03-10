@@ -62,3 +62,5 @@ $route['agents'] = 'Agent/index';
 $route['users'] = 'User/index';
 $route['categories'] = 'Category/index';
 $route['change-password'] = 'Auth/change_password';
+$route['forgot-password'] = 'Auth/forgot_password';
+$route['reset-password/(:any)'] = 'Auth/reset_password_view/$1';
